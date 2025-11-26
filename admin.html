@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Portfolio Editor</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Core Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['Space Grotesk', 'sans-serif'],
+                        'body': ['Inter', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace']
+                    },
+                    colors: {
+                        'primary': '#0A1628',
+                        'secondary': '#00D4FF',
+                        'accent': '#00FF88',
+                        'neutral': '#F8F9FA',
+                        'text': '#2D3748',
+                        'navy': '#0A1628',
+                        'electric': '#00D4FF',
+                        'cyber': '#00FF88'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        :root {
+            --primary: #0A1628;
+            --secondary: #00D4FF;
+            --accent: #00FF88;
+            --neutral: #F8F9FA;
+            --text: #2D3748;
+        }
+        
+        [data-theme="dark"] {
+            --bg-primary: #0A1628;
+            --bg-secondary: #112240;
+            --text-primary: #E6F1FF;
+            --text-secondary: #8892B0;
+            --accent-primary: #00D4FF;
+            --accent-secondary: #00FF88;
+        }
+        
+        [data-theme="light"] {
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F8F9FA;
+            --text-primary: #2D3748;
+            --text-secondary: #4A5568;
+            --accent-primary: #00D4FF;
+            --accent-secondary: #00FF88;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        .nav-glass {
+            background: rgba(10, 22, 40, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+        }
+        
+        .admin-sidebar {
+            background: var(--bg-secondary);
+            border-right: 1px solid rgba(0, 212, 255, 0.1);
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+        }
+        
+        .sidebar-item {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-item:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-left-color: var(--accent-primary);
+        }
+        
+        .sidebar-item.active {
+            background: rgba(0, 212, 255, 0.2);
+            border-left-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+        
+        .admin-content {
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+        }
+        
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border: 2px solid rgba(0, 212, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent-primary);
+            border: 2px solid var(--accent-primary);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--accent-primary);
+            color: white;
+        }
+        
+        .project-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.1);
+        }
+        
+        .tech-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--accent-primary);
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin: 0.25rem;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+        }
+        
+        .notification.success {
+            background: var(--accent-secondary);
+        }
+        
+        .notification.error {
+            background: #ff4757;
+        }
+        
+        .notification.info {
+            background: var(--accent-primary);
+        }
+        
+        .stats-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            text-align: center;
+        }
+        
+        .stats-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .preview-panel {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+        
+        .code-editor {
+            background: #1a1a2e;
+            color: #eee;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            border-radius: 8px;
+            padding: 1rem;
+            min-height: 300px;
+            resize: vertical;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+        
+        .export-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .export-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .export-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.1);
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-glass fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="font-display font-bold text-xl text-white">
+                    Portfolio Admin
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <span class="text-gray-300">Welcome, Lakshay</span>
+                    <button onclick="logout()" class="btn btn-secondary text-sm">
+                        Logout
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex pt-20">
+        <!-- Sidebar -->
+        <div class="admin-sidebar w-64 fixed left-0 top-20">
+            <div class="p-4">
+                <h3 class="font-display font-semibold text-lg mb-4">Content Management</h3>
+                
+                <div class="space-y-2">
+                    <div class="sidebar-item active" data-section="dashboard">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">📊</span>
+                            <span>Dashboard</span>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-item" data-section="personal-info">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">👤</span>
+                            <span>Personal Info</span>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-item" data-section="projects">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">🚀</span>
+                            <span>Projects</span>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-item" data-section="skills">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">⚡</span>
+                            <span>Skills</span>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-item" data-section="achievements">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">🏆</span>
+                            <span>Achievements</span>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-item" data-section="contact-info">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">📧</span>
+                            <span>Contact Info</span>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-item" data-section="export">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">📤</span>
+                            <span>Export & Deploy</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="admin-content flex-1 ml-64">
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="content-section active p-6">
+                <h1 class="text-3xl font-display font-bold mb-8">Dashboard</h1>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="stats-card">
+                        <div class="stats-number">9</div>
+                        <div class="text-gray-400">Total Projects</div>
+                    </div>
+                    
+                    <div class="stats-card">
+                        <div class="stats-number">8</div>
+                        <div class="text-gray-400">Technical Skills</div>
+                    </div>
+                    
+                    <div class="stats-card">
+                        <div class="stats-number">12</div>
+                        <div class="text-gray-400">Achievements</div>
+                    </div>
+                    
+                    <div class="stats-card">
+                        <div class="stats-number">24</div>
+                        <div class="text-gray-400">Hours Response Time</div>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-primary/50 rounded-xl p-6 border border-electric/20">
+                        <h3 class="text-xl font-semibold mb-4">Quick Actions</h3>
+                        <div class="space-y-3">
+                            <button onclick="showSection('personal-info')" class="w-full text-left p-3 rounded-lg hover:bg-electric/10 transition-colors">
+                                📝 Update Personal Information
+                            </button>
+                            <button onclick="showSection('projects')" class="w-full text-left p-3 rounded-lg hover:bg-electric/10 transition-colors">
+                                🚀 Add New Project
+                            </button>
+                            <button onclick="showSection('skills')" class="w-full text-left p-3 rounded-lg hover:bg-electric/10 transition-colors">
+                                ⚡ Update Skills
+                            </button>
+                            <button onclick="exportData()" class="w-full text-left p-3 rounded-lg hover:bg-electric/10 transition-colors">
+                                📤 Export Current Data
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-primary/50 rounded-xl p-6 border border-electric/20">
+                        <h3 class="text-xl font-semibold mb-4">Recent Activity</h3>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex items-center gap-3">
+                                <div class="w-2 h-2 bg-cyber rounded-full"></div>
+                                <span>Portfolio data loaded successfully</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-2 h-2 bg-electric rounded-full"></div>
+                                <span>9 projects ready for editing</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-2 h-2 bg-cyber rounded-full"></div>
+                                <span>Skills visualization configured</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-2 h-2 bg-electric rounded-full"></div>
+                                <span>Contact form validation active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personal Info Section -->
+            <div id="personal-info" class="content-section p-6">
+                <h1 class="text-3xl font-display font-bold mb-8">Personal Information</h1>
+                
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Full Name</label>
+                            <input type="text" id="fullName" class="form-input" value="Lakshay Gupta">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Professional Title</label>
+                            <input type="text" id="professionalTitle" class="form-input" value="Cybersecurity & AI Specialist">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Location</label>
+                            <input type="text" id="location" class="form-input" value="Available for remote work worldwide">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Email</label>
+                            <input type="email" id="email" class="form-input" value="lakshay@example.com">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">LinkedIn URL</label>
+                            <input type="url" id="linkedin" class="form-input" value="linkedin.com/in/lakshaygupta">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">GitHub URL</label>
+                            <input type="url" id="github" class="form-input" value="github.com/lakshaygupta">
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Professional Summary</label>
+                            <textarea id="professionalSummary" class="form-textarea" rows="6">A passionate cybersecurity professional and AI/ML specialist dedicated to protecting digital assets and building intelligent security solutions. I combine cutting-edge technology with strategic thinking to solve complex security challenges.</textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">About Me</label>
+                            <textarea id="aboutMe" class="form-textarea" rows="8">My fascination with cybersecurity began during my computer science studies when I witnessed firsthand how vulnerable our digital infrastructure can be. What started as curiosity about how systems could be compromised evolved into a deep passion for protecting them.
+
+Throughout my career, I've had the privilege of working with diverse organizations, from startups building their security posture from scratch to enterprises implementing complex security architectures. Each experience has reinforced my belief that cybersecurity is not just about technology—it's about protecting people and their trust.
+
+The integration of AI and machine learning into my work has opened new possibilities for predictive security and automated threat response. I'm particularly excited about how these technologies can help us stay ahead of evolving threats while reducing the burden on security teams.
+
+Beyond technical work, I'm committed to making cybersecurity more accessible and inclusive. Through mentoring, speaking, and community involvement, I hope to inspire the next generation of security professionals and contribute to a safer digital world for everyone.</textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 flex gap-4">
+                    <button onclick="savePersonalInfo()" class="btn btn-primary">
+                        Save Changes
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </button>
+                    <button onclick="resetPersonalInfo()" class="btn btn-secondary">
+                        Reset
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Projects Section -->
+            <div id="projects" class="content-section p-6">
+                <div class="flex justify-between items-center mb-8">
+                    <h1 class="text-3xl font-display font-bold">Projects</h1>
+                    <button onclick="addNewProject()" class="btn btn-primary">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Add New Project
+                    </button>
+                </div>
+                
+                <div id="projectsList" class="space-y-6">
+                    <!-- Projects will be loaded here -->
+                </div>
+            </div>
+    
+            <!-- Skills Section -->
+            <div id="skills" class="content-section p-6">
+                <h1 class="text-3xl font-display font-bold mb-8">Skills & Expertise</h1>
+                
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="space-y-6">
+                        <h2 class="text-xl font-semibold">Technical Skills</h2>
+                        <div id="skillsList" class="space-y-4">
+                            <!-- Skills will be loaded here -->
+                        </div>
+                        
+                        <button onclick="addNewSkill()" class="btn btn-secondary">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                            </svg>
+                            Add Skill
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <h2 class="text-xl font-semibold">Skills Preview</h2>
+                        <div class="preview-panel">
+                            <div class="text-center">
+                                <div class="text-4xl mb-4">📊</div>
+                                <p>Skills radar chart preview</p>
+                                <p class="text-sm mt-2">Will update when skills are saved</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Achievements Section -->
+            <div id="achievements" class="content-section p-6">
+                <h1 class="text-3xl font-display font-bold mb-8">Achievements</h1>
+                
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="space-y-6">
+                        <div id="achievementsList" class="space-y-4">
+                            <!-- Achievements will be loaded here -->
+                        </div>
+                        
+                        <button onclick="addNewAchievement()" class="btn btn-secondary">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                            </svg>
+                            Add Achievement
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <h2 class="text-xl font-semibold">Achievement Counters</h2>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="stats-card">
+                                <input type="number" id="projectsCounter" class="stats-number bg-transparent text-center" value="50">
+                                <div class="text-gray-400 text-sm">Projects Completed</div>
+                            </div>
+                            
+                            <div class="stats-card">
+                                <input type="number" id="detectionRate" class="stats-number bg-transparent text-center" value="95">
+                                <div class="text-gray-400 text-sm">Detection Rate %</div>
+                            </div>
+                            
+                            <div class="stats-card">
+                                <input type="number" id="certifications" class="stats-number bg-transparent text-center" value="12">
+                                <div class="text-gray-400 text-sm">Certifications</div>
+                            </div>
+                            
+                            <div class="stats-card">
+                                <input type="number" id="mentored" class="stats-number bg-transparent text-center" value="500">
+                                <div class="text-gray-400 text-sm">Professionals Mentored</div>
+                            </div>
+                        </div>
+                        
+                        <button onclick="saveAchievements()" class="btn btn-primary">
+                            Save Achievement Data
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Contact Info Section -->
+            <div id="contact-info" class="content-section p-6">
+                <h1 class="text-3xl font-display font-bold mb-8">Contact Information</h1>
+                
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="space-y-6">
+                        <h2 class="text-xl font-semibold">Contact Methods</h2>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Primary Email</label>
+                            <input type="email" id="primaryEmail" class="form-input" value="lakshay@example.com">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">LinkedIn Profile</label>
+                            <input type="url" id="linkedinProfile" class="form-input" value="linkedin.com/in/lakshaygupta">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">GitHub Profile</label>
+                            <input type="url" id="githubProfile" class="form-input" value="github.com/lakshaygupta">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Twitter Profile</label>
+                            <input type="url" id="twitterProfile" class="form-input" value="twitter.com/lakshaygupta">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Phone Number (Optional)</label>
+                            <input type="tel" id="phoneNumber" class="form-input" placeholder="+1 (555) 123-4567">
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <h2 class="text-xl font-semibold">Contact Preferences</h2>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Response Time</label>
+                            <select id="responseTime" class="form-select">
+                                <option value="2">Within 2 hours (urgent)</option>
+                                <option value="12" selected>Within 12 hours (projects)</option>
+                                <option value="24">Within 24 hours (general)</option>
+                                <option value="48">Within 48 hours (speaking)</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Preferred Contact Method</label>
+                            <select id="preferredContact" class="form-select">
+                                <option value="email" selected>Email</option>
+                                <option value="linkedin">LinkedIn</option>
+                                <option value="phone">Phone</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Availability Status</label>
+                            <select id="availabilityStatus" class="form-select">
+                                <option value="available" selected>Available for new projects</option>
+                                <option value="limited">Limited availability</option>
+                                <option value="busy">Currently busy</option>
+                                <option value="unavailable">Not accepting new projects</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Time Zone</label>
+                            <input type="text" id="timezone" class="form-input" value="UTC-5 (EST)">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Working Hours</label>
+                            <input type="text" id="workingHours" class="form-input" value="9:00 AM - 6:00 PM EST, Mon-Fri">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 flex gap-4">
+                    <button onclick="saveContactInfo()" class="btn btn-primary">
+                        Save Contact Info
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+    
+            <!-- Export & Deploy Section -->
+            <div id="export" class="content-section p-6">
+                <h1 class="text-3xl font-display font-bold mb-8">Export & Deploy</h1>
+                
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="space-y-6">
+                        <h2 class="text-xl font-semibold">Export Options</h2>
+                        
+                        <div class="export-options">
+                            <div class="export-card" onclick="exportHTML()">
+                                <div class="text-4xl mb-4">🌐</div>
+                                <h3 class="font-semibold mb-2">Export HTML</h3>
+                                <p class="text-sm text-gray-400">Download complete HTML files</p>
+                            </div>
+                            
+                            <div class="export-card" onclick="exportJSON()">
+                                <div class="text-4xl mb-4">📄</div>
+                                <h3 class="font-semibold mb-2">Export JSON</h3>
+                                <p class="text-sm text-gray-400">Download data as JSON file</p>
+                            </div>
+                            
+                            <div class="export-card" onclick="exportMarkdown()">
+                                <div class="text-4xl mb-4">📝</div>
+                                <h3 class="font-semibold mb-2">Export Markdown</h3>
+                                <p class="text-sm text-gray-400">Download content as MD files</p>
+                            </div>
+                            
+                            <div class="export-card" onclick="generatePDF()">
+                                <div class="text-4xl mb-4">📑</div>
+                                <h3 class="font-semibold mb-2">Generate PDF</h3>
+                                <p class="text-sm text-gray-400">Create PDF portfolio</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <h2 class="text-xl font-semibold">Deployment Options</h2>
+                        
+                        <div class="space-y-4">
+                            <div class="bg-primary/50 rounded-xl p-6 border border-electric/20">
+                                <h3 class="font-semibold mb-3">GitHub Pages</h3>
+                                <p class="text-gray-400 text-sm mb-4">Deploy automatically to GitHub Pages</p>
+                                <button onclick="deployToGitHub()" class="btn btn-primary">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                                    </svg>
+                                    Deploy to GitHub
+                                </button>
+                            </div>
+                            
+                            <div class="bg-primary/50 rounded-xl p-6 border border-electric/20">
+                                <h3 class="font-semibold mb-3">Netlify</h3>
+                                <p class="text-gray-400 text-sm mb-4">Deploy to Netlify with continuous deployment</p>
+                                <button onclick="deployToNetlify()" class="btn btn-primary">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                    </svg>
+                                    Deploy to Netlify
+                                </button>
+                            </div>
+                            
+                            <div class="bg-primary/50 rounded-xl p-6 border border-electric/20">
+                                <h3 class="font-semibold mb-3">Vercel</h3>
+                                <p class="text-gray-400 text-sm mb-4">Deploy to Vercel with optimal performance</p>
+                                <button onclick="deployToVercel()" class="btn btn-primary">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                    Deploy to Vercel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-12">
+                    <h2 class="text-xl font-semibold mb-6">Live Preview</h2>
+                    <div class="preview-panel">
+                        <div class="text-center">
+                            <div class="text-4xl mb-4">👁️</div>
+                            <p>Live preview of your portfolio</p>
+                            <p class="text-sm mt-2">
+                                <a href="index.html" target="_blank" class="text-electric hover:text-cyber">View Live Site</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Project Edit Modal -->
+    <div id="projectModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-secondary rounded-xl p-8 max-w-4xl max-h-screen overflow-y-auto m-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-display font-bold">Edit Project</h2>
+                <button onclick="closeProjectModal()" class="text-gray-400 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div id="projectModalContent">
+                <!-- Project form will be loaded here -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Portfolio data storage
+        let portfolioData = {
+            personalInfo: {
+                fullName: "Lakshay Gupta",
+                professionalTitle: "Cybersecurity & AI Specialist",
+                location: "Available for remote work worldwide",
+                email: "lakshay@example.com",
+                linkedin: "linkedin.com/in/lakshaygupta",
+                github: "github.com/lakshaygupta",
+                professionalSummary: "A passionate cybersecurity professional and AI/ML specialist dedicated to protecting digital assets and building intelligent security solutions. I combine cutting-edge technology with strategic thinking to solve complex security challenges.",
+                aboutMe: "My fascination with cybersecurity began during my computer science studies when I witnessed firsthand how vulnerable our digital infrastructure can be. What started as curiosity about how systems could be compromised evolved into a deep passion for protecting them.\n\nThroughout my career, I've had the privilege of working with diverse organizations, from startups building their security posture from scratch to enterprises implementing complex security architectures. Each experience has reinforced my belief that cybersecurity is not just about technology—it's about protecting people and their trust.\n\nThe integration of AI and machine learning into my work has opened new possibilities for predictive security and automated threat response. I'm particularly excited about how these technologies can help us stay ahead of evolving threats while reducing the burden on security teams.\n\nBeyond technical work, I'm committed to making cybersecurity more accessible and inclusive. Through mentoring, speaking, and community involvement, I hope to inspire the next generation of security professionals and contribute to a safer digital world for everyone."
+            },
+            projects: [
+                {
+                    id: 1,
+                    title: "AI-Powered Threat Detection System",
+                    description: "Advanced machine learning system that analyzes network traffic patterns to detect and predict cyber threats in real-time, reducing false positives by 75%.",
+                    technologies: ["Python", "TensorFlow", "Scikit-learn", "Network Analysis"],
+                    categories: ["ai-ml", "cybersecurity"],
+                    image: "ai_project.png",
+                    links: { code: "#", demo: "#" },
+                    featured: true
+                },
+                {
+                    id: 2,
+                    title: "Automated Security Audit Framework",
+                    description: "Comprehensive security auditing tool that automates vulnerability assessments, compliance checks, and generates detailed security reports for enterprise environments.",
+                    technologies: ["Python", "Bash", "Docker", "CI/CD"],
+                    categories: ["cybersecurity", "automation"],
+                    image: "cybersecurity_project.png",
+                    links: { code: "#", documentation: "#" },
+                    featured: false
+                }
+                // Add more projects as needed
+            ],
+            skills: [
+                { name: "Cybersecurity", level: 95, category: "Security" },
+                { name: "AI/ML", level: 88, category: "Technology" },
+                { name: "Python", level: 92, category: "Programming" },
+                { name: "Risk Assessment", level: 90, category: "Security" },
+                { name: "Incident Response", level: 85, category: "Security" },
+                { name: "Threat Analysis", level: 87, category: "Security" },
+                { name: "Network Security", level: 89, category: "Security" },
+                { name: "Penetration Testing", level: 83, category: "Security" }
+            ],
+            achievements: [
+                { id: 1, number: "50+", label: "Projects Completed", description: "Successful security implementations and research projects" },
+                { id: 2, number: "95%", label: "Threat Detection Rate", description: "Average accuracy in AI-powered threat detection systems" },
+                { id: 3, number: "12", label: "Certifications Earned", description: "Industry-recognized credentials and specializations" },
+                { id: 4, number: "500+", label: "Professionals Mentored", description: "Cybersecurity professionals trained and guided" }
+            ],
+            contactInfo: {
+                primaryEmail: "lakshay@example.com",
+                linkedinProfile: "linkedin.com/in/lakshaygupta",
+                githubProfile: "github.com/lakshaygupta",
+                twitterProfile: "twitter.com/lakshaygupta",
+                phoneNumber: "",
+                responseTime: "12",
+                preferredContact: "email",
+                availabilityStatus: "available",
+                timezone: "UTC-5 (EST)",
+                workingHours: "9:00 AM - 6:00 PM EST, Mon-Fri"
+            }
+        };
+    
+        // Initialize admin interface
+        document.addEventListener('DOMContentLoaded', function() {
+            // Basic demo-session check. This is NOT real security, just a UX guard.
+            const isLoggedIn = localStorage.getItem('adminLoggedIn');
+            if (!isLoggedIn) {
+                // If someone opens admin.html directly, send them to the demo login page.
+                window.location.href = 'login.html';
+                return;
+            }
+
+            loadDashboard();
+            setupSidebarNavigation();
+            loadAllData();
+        });
+    
+        function setupSidebarNavigation() {
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const section = this.dataset.section;
+                    showSection(section);
+                });
+            });
+        }
+    
+        function showSection(sectionName) {
+            // Update sidebar active state
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`[data-section="${sectionName}"]`).classList.add('active');
+            
+            // Show corresponding content section
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionName).classList.add('active');
+            
+            // Load section-specific data
+            switch(sectionName) {
+                case 'projects':
+                    loadProjects();
+                    break;
+                case 'skills':
+                    loadSkills();
+                    break;
+                case 'achievements':
+                    loadAchievements();
+                    break;
+                case 'personal-info':
+                    loadPersonalInfo();
+                    break;
+                case 'contact-info':
+                    loadContactInfo();
+                    break;
+            }
+        }
+    
+        function loadDashboard() {
+            // Update stats
+            document.querySelector('.stats-card .stats-number').textContent = portfolioData.projects.length;
+        }
+    
+        function loadAllData() {
+            loadPersonalInfo();
+            loadProjects();
+            loadSkills();
+            loadAchievements();
+            loadContactInfo();
+        }
+    
+        function loadPersonalInfo() {
+            const info = portfolioData.personalInfo;
+            document.getElementById('fullName').value = info.fullName;
+            document.getElementById('professionalTitle').value = info.professionalTitle;
+            document.getElementById('location').value = info.location;
+            document.getElementById('email').value = info.email;
+            document.getElementById('linkedin').value = info.linkedin;
+            document.getElementById('github').value = info.github;
+            document.getElementById('professionalSummary').value = info.professionalSummary;
+            document.getElementById('aboutMe').value = info.aboutMe;
+        }
+    
+        function savePersonalInfo() {
+            portfolioData.personalInfo = {
+                fullName: document.getElementById('fullName').value,
+                professionalTitle: document.getElementById('professionalTitle').value,
+                location: document.getElementById('location').value,
+                email: document.getElementById('email').value,
+                linkedin: document.getElementById('linkedin').value,
+                github: document.getElementById('github').value,
+                professionalSummary: document.getElementById('professionalSummary').value,
+                aboutMe: document.getElementById('aboutMe').value
+            };
+            
+            saveToLocalStorage();
+            showNotification('Personal information saved successfully!', 'success');
+        }
+    
+        function resetPersonalInfo() {
+            loadPersonalInfo();
+            showNotification('Personal information reset to saved values.', 'info');
+        }
+    
+        function loadProjects() {
+            const projectsList = document.getElementById('projectsList');
+            projectsList.innerHTML = '';
+            
+            portfolioData.projects.forEach(project => {
+                const projectCard = createProjectCard(project);
+                projectsList.appendChild(projectCard);
+            });
+        }
+    
+        function createProjectCard(project) {
+            const card = document.createElement('div');
+            card.className = 'project-card p-6';
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-xl font-semibold">${project.title}</h3>
+                    <div class="flex gap-2">
+                        <button onclick="editProject(${project.id})" class="text-electric hover:text-cyber">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            </svg>
+                        </button>
+                        <button onclick="deleteProject(${project.id})" class="text-red-400 hover:text-red-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <p class="text-gray-400 mb-4">${project.description}</p>
+                <div class="mb-4">
+                    ${project.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-500">${project.categories.join(' • ')}</span>
+                    <div class="flex gap-2">
+                        ${Object.entries(project.links).map(([key, url]) => 
+                            `<a href="${url}" class="text-electric hover:text-cyber text-sm">${key}</a>`
+                        ).join('')}
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+    
+        function loadSkills() {
+            const skillsList = document.getElementById('skillsList');
+            skillsList.innerHTML = '';
+            
+            portfolioData.skills.forEach((skill, index) => {
+                const skillItem = createSkillItem(skill, index);
+                skillsList.appendChild(skillItem);
+            });
+        }
+    
+        function createSkillItem(skill, index) {
+            const item = document.createElement('div');
+            item.className = 'bg-primary/50 rounded-lg p-4 border border-electric/20';
+            item.innerHTML = `
+                <div class="flex justify-between items-center mb-3">
+                    <input type="text" value="${skill.name}" class="form-input font-semibold" onchange="updateSkill(${index}, 'name', this.value)">
+                    <button onclick="deleteSkill(${index})" class="text-red-400 hover:text-red-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">Proficiency Level</label>
+                        <input type="range" min="0" max="100" value="${skill.level}" class="w-full" onchange="updateSkill(${index}, 'level', this.value)">
+                        <span class="text-sm text-electric">${skill.level}%</span>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">Category</label>
+                        <input type="text" value="${skill.category}" class="form-input" onchange="updateSkill(${index}, 'category', this.value)">
+                    </div>
+                </div>
+            `;
+            return item;
+        }
+    
+        function loadAchievements() {
+            const achievementsList = document.getElementById('achievementsList');
+            achievementsList.innerHTML = '';
+            
+            portfolioData.achievements.forEach((achievement, index) => {
+                const achievementItem = createAchievementItem(achievement, index);
+                achievementsList.appendChild(achievementItem);
+            });
+        }
+    
+        function createAchievementItem(achievement, index) {
+            const item = document.createElement('div');
+            item.className = 'bg-primary/50 rounded-lg p-4 border border-electric/20';
+            item.innerHTML = `
+                <div class="flex justify-between items-start mb-3">
+                    <div class="flex-1">
+                        <input type="text" value="${achievement.number}" class="form-input font-semibold text-electric text-2xl mb-2" onchange="updateAchievement(${index}, 'number', this.value)">
+                        <input type="text" value="${achievement.label}" class="form-input font-semibold mb-2" onchange="updateAchievement(${index}, 'label', this.value)">
+                        <textarea class="form-textarea text-sm" rows="2" onchange="updateAchievement(${index}, 'description', this.value)">${achievement.description}</textarea>
+                    </div>
+                    <button onclick="deleteAchievement(${index})" class="text-red-400 hover:text-red-300 ml-4">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            `;
+            return item;
+        }
+    
+        function loadContactInfo() {
+            const info = portfolioData.contactInfo;
+            document.getElementById('primaryEmail').value = info.primaryEmail;
+            document.getElementById('linkedinProfile').value = info.linkedinProfile;
+            document.getElementById('githubProfile').value = info.githubProfile;
+            document.getElementById('twitterProfile').value = info.twitterProfile;
+            document.getElementById('phoneNumber').value = info.phoneNumber;
+            document.getElementById('responseTime').value = info.responseTime;
+            document.getElementById('preferredContact').value = info.preferredContact;
+            document.getElementById('availabilityStatus').value = info.availabilityStatus;
+            document.getElementById('timezone').value = info.timezone;
+            document.getElementById('workingHours').value = info.workingHours;
+        }
+    
+        // CRUD operations
+        function addNewProject() {
+            const newProject = {
+                id: Date.now(),
+                title: "New Project",
+                description: "Project description...",
+                technologies: ["Technology"],
+                categories: ["category"],
+                image: "placeholder.png",
+                links: { code: "#", demo: "#" },
+                featured: false
+            };
+            
+            portfolioData.projects.push(newProject);
+            saveToLocalStorage();
+            loadProjects();
+            showNotification('New project added successfully!', 'success');
+        }
+    
+        function editProject(projectId) {
+            const project = portfolioData.projects.find(p => p.id === projectId);
+            if (!project) return;
+            
+            // Create edit form
+            const modalContent = document.getElementById('projectModalContent');
+            modalContent.innerHTML = `
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Project Title</label>
+                        <input type="text" id="editProjectTitle" class="form-input" value="${project.title}">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Description</label>
+                        <textarea id="editProjectDescription" class="form-textarea" rows="4">${project.description}</textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Technologies (comma-separated)</label>
+                        <input type="text" id="editProjectTechnologies" class="form-input" value="${project.technologies.join(', ')}">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Categories (comma-separated)</label>
+                        <input type="text" id="editProjectCategories" class="form-input" value="${project.categories.join(', ')}">
+                    </div>
+                    
+                    <div class="flex gap-4">
+                        <button onclick="saveProjectEdit(${projectId})" class="btn btn-primary">Save Changes</button>
+                        <button onclick="closeProjectModal()" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('projectModal').classList.remove('hidden');
+            document.getElementById('projectModal').classList.add('flex');
+        }
+    
+        function saveProjectEdit(projectId) {
+            const project = portfolioData.projects.find(p => p.id === projectId);
+            if (!project) return;
+            
+            project.title = document.getElementById('editProjectTitle').value;
+            project.description = document.getElementById('editProjectDescription').value;
+            project.technologies = document.getElementById('editProjectTechnologies').value.split(',').map(t => t.trim());
+            project.categories = document.getElementById('editProjectCategories').value.split(',').map(c => c.trim());
+            
+            saveToLocalStorage();
+            loadProjects();
+            closeProjectModal();
+            showNotification('Project updated successfully!', 'success');
+        }
+    
+        function deleteProject(projectId) {
+            if (confirm('Are you sure you want to delete this project?')) {
+                portfolioData.projects = portfolioData.projects.filter(p => p.id !== projectId);
+                saveToLocalStorage();
+                loadProjects();
+                showNotification('Project deleted successfully!', 'success');
+            }
+        }
+    
+        function closeProjectModal() {
+            document.getElementById('projectModal').classList.add('hidden');
+            document.getElementById('projectModal').classList.remove('flex');
+        }
+    
+        function addNewSkill() {
+            const newSkill = {
+                name: "New Skill",
+                level: 50,
+                category: "General"
+            };
+            
+            portfolioData.skills.push(newSkill);
+            saveToLocalStorage();
+            loadSkills();
+            showNotification('New skill added successfully!', 'success');
+        }
+    
+        function updateSkill(index, field, value) {
+            if (field === 'level') {
+                // Update the level display
+                const levelSpan = event.target.nextElementSibling;
+                levelSpan.textContent = value + '%';
+            }
+            portfolioData.skills[index][field] = value;
+            saveToLocalStorage();
+        }
+    
+        function deleteSkill(index) {
+            if (confirm('Are you sure you want to delete this skill?')) {
+                portfolioData.skills.splice(index, 1);
+                saveToLocalStorage();
+                loadSkills();
+                showNotification('Skill deleted successfully!', 'success');
+            }
+        }
+    
+        function addNewAchievement() {
+            const newAchievement = {
+                id: Date.now(),
+                number: "0",
+                label: "New Achievement",
+                description: "Achievement description..."
+            };
+            
+            portfolioData.achievements.push(newAchievement);
+            saveToLocalStorage();
+            loadAchievements();
+            showNotification('New achievement added successfully!', 'success');
+        }
+    
+        function updateAchievement(index, field, value) {
+            portfolioData.achievements[index][field] = value;
+            saveToLocalStorage();
+        }
+    
+        function deleteAchievement(index) {
+            if (confirm('Are you sure you want to delete this achievement?')) {
+                portfolioData.achievements.splice(index, 1);
+                saveToLocalStorage();
+                loadAchievements();
+                showNotification('Achievement deleted successfully!', 'success');
+            }
+        }
+    
+        function saveAchievements() {
+            // Save achievement counter values
+            portfolioData.achievements[0].number = document.getElementById('projectsCounter').value + '+';
+            portfolioData.achievements[1].number = document.getElementById('detectionRate').value + '%';
+            portfolioData.achievements[2].number = document.getElementById('certifications').value;
+            portfolioData.achievements[3].number = document.getElementById('mentored').value + '+';
+            
+            saveToLocalStorage();
+            showNotification('Achievement data saved successfully!', 'success');
+        }
+    
+        function saveContactInfo() {
+            portfolioData.contactInfo = {
+                primaryEmail: document.getElementById('primaryEmail').value,
+                linkedinProfile: document.getElementById('linkedinProfile').value,
+                githubProfile: document.getElementById('githubProfile').value,
+                twitterProfile: document.getElementById('twitterProfile').value,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                responseTime: document.getElementById('responseTime').value,
+                preferredContact: document.getElementById('preferredContact').value,
+                availabilityStatus: document.getElementById('availabilityStatus').value,
+                timezone: document.getElementById('timezone').value,
+                workingHours: document.getElementById('workingHours').value
+            };
+            
+            saveToLocalStorage();
+            showNotification('Contact information saved successfully!', 'success');
+        }
+    
+        // Export functions
+        function exportHTML() {
+            showNotification('HTML export feature coming soon!', 'info');
+        }
+    
+        function exportJSON() {
+            const dataStr = JSON.stringify(portfolioData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'portfolio-data.json';
+            link.click();
+            showNotification('JSON data exported successfully!', 'success');
+        }
+    
+        function exportMarkdown() {
+            showNotification('Markdown export feature coming soon!', 'info');
+        }
+    
+        function generatePDF() {
+            showNotification('PDF generation feature coming soon!', 'info');
+        }
+    
+        function deployToGitHub() {
+            showNotification('GitHub deployment feature coming soon!', 'info');
+        }
+    
+        function deployToNetlify() {
+            showNotification('Netlify deployment feature coming soon!', 'info');
+        }
+    
+        function deployToVercel() {
+            showNotification('Vercel deployment feature coming soon!', 'info');
+        }
+    
+        function exportData() {
+            exportJSON();
+        }
+    
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                showNotification('Logged out successfully!', 'info');
+                // In a real application, you would redirect to login page
+            }
+        }
+    
+        // Local storage functions
+        function saveToLocalStorage() {
+            localStorage.setItem('portfolioData', JSON.stringify(portfolioData));
+        }
+    
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('portfolioData');
+            if (saved) {
+                portfolioData = JSON.parse(saved);
+            }
+        }
+    
+        // Initialize data from localStorage if available
+        loadFromLocalStorage();
+    
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            anime({
+                targets: notification,
+                opacity: [0, 1],
+                translateX: [300, 0],
+                duration: 300,
+                easing: 'easeOutQuart'
+            });
+            
+            setTimeout(() => {
+                anime({
+                    targets: notification,
+                    opacity: 0,
+                    translateX: 300,
+                    duration: 300,
+                    easing: 'easeInQuart',
+                    complete: () => {
+                        document.body.removeChild(notification);
+                    }
+                });
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

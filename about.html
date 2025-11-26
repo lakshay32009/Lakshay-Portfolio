@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Lakshay Gupta</title>
+    <meta name="description" content="Learn more about Lakshay Gupta's professional journey, expertise in cybersecurity and AI/ML, and commitment to community impact.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Core Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['Space Grotesk', 'sans-serif'],
+                        'body': ['Inter', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace']
+                    },
+                    colors: {
+                        'primary': '#0A1628',
+                        'secondary': '#00D4FF',
+                        'accent': '#00FF88',
+                        'neutral': '#F8F9FA',
+                        'text': '#2D3748',
+                        'navy': '#0A1628',
+                        'electric': '#00D4FF',
+                        'cyber': '#00FF88'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        :root {
+            --primary: #0A1628;
+            --secondary: #00D4FF;
+            --accent: #00FF88;
+            --neutral: #F8F9FA;
+            --text: #2D3748;
+        }
+        
+        [data-theme="dark"] {
+            --bg-primary: #0A1628;
+            --bg-secondary: #112240;
+            --text-primary: #E6F1FF;
+            --text-secondary: #8892B0;
+            --accent-primary: #00D4FF;
+            --accent-secondary: #00FF88;
+        }
+        
+        [data-theme="light"] {
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F8F9FA;
+            --text-primary: #2D3748;
+            --text-secondary: #4A5568;
+            --accent-primary: #00D4FF;
+            --accent-secondary: #00FF88;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        .nav-glass {
+            background: rgba(10, 22, 40, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--accent-primary);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent-primary), var(--accent-secondary));
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .timeline-marker {
+            position: absolute;
+            left: 50%;
+            top: 1rem;
+            width: 20px;
+            height: 20px;
+            background: var(--accent-primary);
+            border: 4px solid var(--bg-primary);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-item:hover .timeline-marker {
+            background: var(--accent-secondary);
+            transform: translateX(-50%) scale(1.2);
+        }
+        
+        .timeline-content {
+            width: 45%;
+            padding: 2rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: auto;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-right: auto;
+        }
+        
+        .timeline-details {
+            height: 0;
+            overflow: hidden;
+            opacity: 0;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0, 212, 255, 0.2);
+        }
+        
+        .timeline-item.expanded .timeline-details {
+            height: auto;
+            opacity: 1;
+        }
+        
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 2rem;
+            }
+            
+            .timeline-marker {
+                left: 2rem;
+            }
+            
+            .timeline-content {
+                width: calc(100% - 4rem);
+                margin-left: 4rem !important;
+                margin-right: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-glass fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="font-display font-bold text-xl text-white">
+                    <a href="index.html">Lakshay Gupta</a>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-white hover:text-electric">Home</a>
+                    <a href="about.html" class="nav-link text-electric">About</a>
+                    <a href="projects.html" class="nav-link text-white hover:text-electric">Projects</a>
+                    <a href="contact.html" class="nav-link text-white hover:text-electric">Contact</a>
+                    <button class="theme-toggle p-2 rounded-lg bg-electric/20 text-electric hover:bg-electric hover:text-white transition-all">
+                        🌙
+                    </button>
+                </div>
+                
+                <div class="md:hidden">
+                    <button class="mobile-menu-btn text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mobile-menu hidden md:hidden mt-4 pb-4">
+                <div class="flex flex-col space-y-4">
+                    <a href="index.html" class="nav-link text-white hover:text-electric">Home</a>
+                    <a href="about.html" class="nav-link text-electric">About</a>
+                    <a href="projects.html" class="nav-link text-white hover:text-electric">Projects</a>
+                    <a href="contact.html" class="nav-link text-white hover:text-electric">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-24 pb-16 bg-navy">
+        <div class="container mx-auto px-6">
+            <div class="text-center animate-on-scroll">
+                <h1 class="text-5xl font-display font-bold mb-6">
+                    About <span class="text-electric">Me</span>
+                </h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    A journey through cybersecurity, AI innovation, and community impact
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Personal Story Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="animate-on-scroll">
+                    <img src="hero_portrait.png" alt="Lakshay Gupta" class="w-full max-w-md mx-auto rounded-2xl shadow-2xl">
+                </div>
+                
+                <div class="animate-on-scroll">
+                    <h2 class="text-3xl font-display font-bold mb-6">My Story</h2>
+                    <p class="text-gray-300 mb-6">
+                        My fascination with cybersecurity began during my computer science studies when I witnessed firsthand how vulnerable our digital infrastructure can be. What started as curiosity about how systems could be compromised evolved into a deep passion for protecting them.
+                    </p>
+                    <p class="text-gray-300 mb-6">
+                        Throughout my career, I've had the privilege of working with diverse organizations, from startups building their security posture from scratch to enterprises implementing complex security architectures. Each experience has reinforced my belief that cybersecurity is not just about technology—it's about protecting people and their trust.
+                    </p>
+                    <p class="text-gray-300 mb-6">
+                        The integration of AI and machine learning into my work has opened new possibilities for predictive security and automated threat response. I'm particularly excited about how these technologies can help us stay ahead of evolving threats while reducing the burden on security teams.
+                    </p>
+                    <p class="text-gray-300">
+                        Beyond technical work, I'm committed to making cybersecurity more accessible and inclusive. Through mentoring, speaking, and community involvement, I hope to inspire the next generation of security professionals and contribute to a safer digital world for everyone.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Timeline -->
+    <section class="py-20 bg-navy">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-4xl font-display font-bold mb-6">Professional Journey</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Key milestones and achievements that have shaped my career in cybersecurity and AI
+                </p>
+            </div>
+            
+            <div class="timeline animate-on-scroll">
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-display font-semibold text-electric">Senior Cybersecurity Analyst</h3>
+                            <span class="text-sm text-gray-400">2022 - Present</span>
+                        </div>
+                        <p class="text-gray-300 mb-3">Leading AI-powered security initiatives and threat detection systems</p>
+                        <div class="timeline-details">
+                            <ul class="space-y-2 text-gray-400">
+                                <li>• Developed machine learning models for anomaly detection, reducing false positives by 60%</li>
+                                <li>• Led incident response team handling 200+ security incidents</li>
+                                <li>• Implemented zero-trust architecture for enterprise clients</li>
+                                <li>• Mentored 15+ junior security professionals</li>
+                                <li>• Published 3 research papers on AI in cybersecurity</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-display font-semibold text-electric">Security Consultant</h3>
+                            <span class="text-sm text-gray-400">2020 - 2022</span>
+                        </div>
+                        <p class="text-gray-300 mb-3">Provided cybersecurity consulting for Fortune 500 companies</p>
+                        <div class="timeline-details">
+                            <ul class="space-y-2 text-gray-400">
+                                <li>• Conducted 50+ security assessments and penetration tests</li>
+                                <li>• Developed security frameworks for cloud migration projects</li>
+                                <li>• Trained 200+ employees on security best practices</li>
+                                <li>• Achieved 98% client satisfaction rating</li>
+                                <li>• Led security architecture redesign for 3 major enterprises</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-display font-semibold text-electric">Cybersecurity Specialist</h3>
+                            <span class="text-sm text-gray-400">2018 - 2020</span>
+                        </div>
+                        <p class="text-gray-300 mb-3">Specialized in threat intelligence and incident response</p>
+                        <div class="timeline-details">
+                            <ul class="space-y-2 text-gray-400">
+                                <li>• Built threat intelligence platform processing 1M+ indicators daily</li>
+                                <li>• Coordinated response to major security breaches</li>
+                                <li>• Developed automation scripts reducing response time by 40%</li>
+                                <li>• Earned CISSP, CEH, and GCIH certifications</li>
+                                <li>• Presented at 5 cybersecurity conferences</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-display font-semibold text-electric">Security Analyst</h3>
+                            <span class="text-sm text-gray-400">2016 - 2018</span>
+                        </div>
+                        <p class="text-gray-300 mb-3">Started career in cybersecurity with focus on network security</p>
+                        <div class="timeline-details">
+                            <ul class="space-y-2 text-gray-400">
+                                <li>• Monitored and analyzed security events from 500+ systems</li>
+                                <li>• Implemented SIEM solutions and security monitoring tools</li>
+                                <li>• Conducted vulnerability assessments and risk analysis</li>
+                                <li>• Achieved Security+ and Network+ certifications</li>
+                                <li>• Contributed to open-source security projects</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-display font-semibold text-electric">Computer Science Degree</h3>
+                            <span class="text-sm text-gray-400">2012 - 2016</span>
+                        </div>
+                        <p class="text-gray-300 mb-3">Bachelor's degree with focus on information security</p>
+                        <div class="timeline-details">
+                            <ul class="space-y-2 text-gray-400">
+                                <li>• Graduated Magna Cum Laude with 3.8 GPA</li>
+                                <li>• Led university cybersecurity club with 50+ members</li>
+                                <li>• Won 1st place in national cybersecurity competition</li>
+                                <li>• Completed research on cryptography and network security</li>
+                                <li>• Interned with major tech company security team</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values & Mission -->
+    <section class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-4xl font-display font-bold mb-6">Values & Mission</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    The principles that guide my work and vision for the future of cybersecurity
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-primary/50 rounded-xl p-8 border border-electric/20 animate-on-scroll">
+                    <div class="text-4xl mb-4">🛡️</div>
+                    <h3 class="text-xl font-display font-semibold mb-4 text-electric">Security First</h3>
+                    <p class="text-gray-300">
+                        Every decision prioritizes security and privacy. I believe in building systems that protect users and their data by design, not as an afterthought.
+                    </p>
+                </div>
+                
+                <div class="bg-primary/50 rounded-xl p-8 border border-electric/20 animate-on-scroll">
+                    <div class="text-4xl mb-4">🤝</div>
+                    <h3 class="text-xl font-display font-semibold mb-4 text-electric">Collaboration</h3>
+                    <p class="text-gray-300">
+                        Cybersecurity is a team effort. I believe in sharing knowledge, learning from others, and building strong partnerships to create a safer digital world.
+                    </p>
+                </div>
+                
+                <div class="bg-primary/50 rounded-xl p-8 border border-electric/20 animate-on-scroll">
+                    <div class="text-4xl mb-4">📚</div>
+                    <h3 class="text-xl font-display font-semibold mb-4 text-electric">Continuous Learning</h3>
+                    <p class="text-gray-300">
+                        The threat landscape evolves constantly. I stay current with emerging threats, technologies, and best practices through ongoing education and research.
+                    </p>
+                </div>
+                
+                <div class="bg-primary/50 rounded-xl p-8 border border-electric/20 animate-on-scroll">
+                    <div class="text-4xl mb-4">⚖️</div>
+                    <h3 class="text-xl font-display font-semibold mb-4 text-electric">Ethical Practice</h3>
+                    <p class="text-gray-300">
+                        I adhere to the highest ethical standards in all security work, using my skills to protect and defend, never to harm or exploit.
+                    </p>
+                </div>
+                
+                <div class="bg-primary/50 rounded-xl p-8 border border-electric/20 animate-on-scroll">
+                    <div class="text-4xl mb-4">🌱</div>
+                    <h3 class="text-xl font-display font-semibold mb-4 text-electric">Innovation</h3>
+                    <p class="text-gray-300">
+                        I embrace new technologies and approaches, constantly seeking better ways to solve security challenges and improve defensive capabilities.
+                    </p>
+                </div>
+                
+                <div class="bg-primary/50 rounded-xl p-8 border border-electric/20 animate-on-scroll">
+                    <div class="text-4xl mb-4">🎯</div>
+                    <h3 class="text-xl font-display font-semibold mb-4 text-electric">Impact Focus</h3>
+                    <p class="text-gray-300">
+                        I measure success by the real-world impact of my work—reducing risk, preventing breaches, and making security more accessible to everyone.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Impact -->
+    <section class="py-20 bg-navy">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-4xl font-display font-bold mb-6">Community Impact</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Giving back to the cybersecurity community through education, mentorship, and open-source contributions
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="animate-on-scroll">
+                    <h3 class="text-2xl font-display font-semibold mb-6 text-electric">Mentorship & Education</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-electric rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0">
+                                500+
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-2">Professionals Mentored</h4>
+                                <p class="text-gray-400">Guided cybersecurity professionals through career development, certification preparation, and skill building.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-cyber rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0">
+                                50+
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-2">Workshops Conducted</h4>
+                                <p class="text-gray-400">Led hands-on workshops covering topics from basic security hygiene to advanced threat hunting techniques.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-electric rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0">
+                                15
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-2">Conference Presentations</h4>
+                                <p class="text-gray-400">Shared insights at cybersecurity conferences, focusing on practical applications of AI in security.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="animate-on-scroll">
+                    <h3 class="text-2xl font-display font-semibold mb-6 text-electric">Open Source & Research</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-cyber rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0">
+                                25+
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-2">Open Source Projects</h4>
+                                <p class="text-gray-400">Contributed to security tools and frameworks used by thousands of professionals worldwide.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-electric rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0">
+                                8
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-2">Research Publications</h4>
+                                <p class="text-gray-400">Published peer-reviewed papers on AI applications in cybersecurity and threat detection.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-cyber rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0">
+                                1000+
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-2">Community Members</h4>
+                                <p class="text-gray-400">Built and nurtured cybersecurity communities focused on knowledge sharing and professional growth.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-primary border-t border-electric/20 py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-gray-400">
+                © 2025 Lakshay Gupta. All rights reserved. | Building a safer digital world through cybersecurity and AI innovation.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Simple animation and interaction handling
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        anime({
+                            targets: entry.target,
+                            opacity: [0, 1],
+                            translateY: [30, 0],
+                            duration: 800,
+                            easing: 'easeOutQuart'
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Timeline interactions
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const details = this.querySelector('.timeline-details');
+                    const isExpanded = this.classList.contains('expanded');
+                    
+                    // Close all other items
+                    document.querySelectorAll('.timeline-item').forEach(otherItem => {
+                        if (otherItem !== this) {
+                            otherItem.classList.remove('expanded');
+                        }
+                    });
+                    
+                    // Toggle current item
+                    if (isExpanded) {
+                        this.classList.remove('expanded');
+                    } else {
+                        this.classList.add('expanded');
+                    }
+                });
+            });
+
+            // Theme toggle
+            const themeToggle = document.querySelector('.theme-toggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', function() {
+                    const html = document.documentElement;
+                    const currentTheme = html.getAttribute('data-theme');
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    
+                    html.setAttribute('data-theme', newTheme);
+                    this.textContent = newTheme === 'dark' ? '🌙' : '☀️';
+                });
+            }
+
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

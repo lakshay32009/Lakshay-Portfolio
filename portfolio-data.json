@@ -1,0 +1,136 @@
+{
+    "personalInfo": {
+        "fullName": "Lakshay Gupta",
+        "professionalTitle": "Cybersecurity & AI Specialist",
+        "location": "Available for remote work worldwide",
+        "email": "lakshay@example.com",
+        "linkedin": "linkedin.com/in/lakshaygupta",
+        "github": "github.com/lakshaygupta",
+        "professionalSummary": "A passionate cybersecurity professional and AI/ML specialist dedicated to protecting digital assets and building intelligent security solutions. I combine cutting-edge technology with strategic thinking to solve complex security challenges.",
+        "aboutMe": "My fascination with cybersecurity began during my computer science studies when I witnessed firsthand how vulnerable our digital infrastructure can be. What started as curiosity about how systems could be compromised evolved into a deep passion for protecting them.\n\nThroughout my career, I've had the privilege of working with diverse organizations, from startups building their security posture from scratch to enterprises implementing complex security architectures. Each experience has reinforced my belief that cybersecurity is not just about technology\u2014it's about protecting people and their trust.\n\nThe integration of AI and machine learning into my work has opened new possibilities for predictive security and automated threat response. I'm particularly excited about how these technologies can help us stay ahead of evolving threats while reducing the burden on security teams.\n\nBeyond technical work, I'm committed to making cybersecurity more accessible and inclusive. Through mentoring, speaking, and community involvement, I hope to inspire the next generation of security professionals and contribute to a safer digital world for everyone."
+    },
+    "projects": [
+        {
+            "id": 1,
+            "title": "AI-Powered Threat Detection System",
+            "description": "Advanced machine learning system that analyzes network traffic patterns to detect and predict cyber threats in real-time, reducing false positives by 75%.",
+            "technologies": [
+                "Python",
+                "TensorFlow",
+                "Scikit-learn",
+                "Network Analysis"
+            ],
+            "categories": [
+                "ai-ml",
+                "cybersecurity"
+            ],
+            "image": "ai_project.png",
+            "links": {
+                "code": "#",
+                "demo": "#"
+            },
+            "featured": true
+        },
+        {
+            "id": 2,
+            "title": "Automated Security Audit Framework",
+            "description": "Comprehensive security auditing tool that automates vulnerability assessments, compliance checks, and generates detailed security reports for enterprise environments.",
+            "technologies": [
+                "Python",
+                "Bash",
+                "Docker",
+                "CI/CD"
+            ],
+            "categories": [
+                "cybersecurity",
+                "automation"
+            ],
+            "image": "cybersecurity_project.png",
+            "links": {
+                "code": "#",
+                "documentation": "#"
+            },
+            "featured": false
+        }
+    ],
+    "skills": [
+        {
+            "name": "Cybersecurity",
+            "level": 95,
+            "category": "Security"
+        },
+        {
+            "name": "AI/ML",
+            "level": 88,
+            "category": "Technology"
+        },
+        {
+            "name": "Python",
+            "level": 92,
+            "category": "Programming"
+        },
+        {
+            "name": "Risk Assessment",
+            "level": 90,
+            "category": "Security"
+        },
+        {
+            "name": "Incident Response",
+            "level": 85,
+            "category": "Security"
+        },
+        {
+            "name": "Threat Analysis",
+            "level": 87,
+            "category": "Security"
+        },
+        {
+            "name": "Network Security",
+            "level": 89,
+            "category": "Security"
+        },
+        {
+            "name": "Penetration Testing",
+            "level": 83,
+            "category": "Security"
+        }
+    ],
+    "achievements": [
+        {
+            "id": 1,
+            "number": "50+",
+            "label": "Projects Completed",
+            "description": "Successful security implementations and research projects"
+        },
+        {
+            "id": 2,
+            "number": "95%",
+            "label": "Threat Detection Rate",
+            "description": "Average accuracy in AI-powered threat detection systems"
+        },
+        {
+            "id": 3,
+            "number": "12",
+            "label": "Certifications Earned",
+            "description": "Industry-recognized credentials and specializations"
+        },
+        {
+            "id": 4,
+            "number": "500+",
+            "label": "Professionals Mentored",
+            "description": "Cybersecurity professionals trained and guided"
+        }
+    ],
+    "contactInfo": {
+        "primaryEmail": "lakshay@example.com",
+        "linkedinProfile": "linkedin.com/in/lakshaygupta",
+        "githubProfile": "github.com/lakshaygupta",
+        "twitterProfile": "twitter.com/lakshaygupta",
+        "phoneNumber": "",
+        "responseTime": "12",
+        "preferredContact": "email",
+        "availabilityStatus": "available",
+        "timezone": "UTC-5 (EST)",
+        "workingHours": "9:00 AM - 6:00 PM EST, Mon-Fri"
+    }
+}
